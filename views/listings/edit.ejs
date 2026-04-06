@@ -1,0 +1,118 @@
+<% layout("./layouts/boilerplate") %>
+<% layout("./layouts/boilerplate") %>
+
+<div class="form-wrapper">
+  <div class="form-card">
+    <h2 class="form-title">Edit Your Listing</h2>
+
+    <form action="/listings/<%= listing._id %>?_method=PUT" 
+          method="post" 
+          novalidate 
+          class="needs-validation" 
+          enctype="multipart/form-data">
+
+      <!-- Title -->
+      <div class="form-group">
+        <label>Title</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Enter title" 
+          name="listing[title]" 
+          value="<%= listing.title %>" 
+          required>
+        <div class="invalid-feedback">
+          Please enter a valid title.
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description</label>
+        <textarea 
+          class="form-control" 
+          rows="3" 
+          placeholder="Enter description" 
+          name="listing[description]" 
+          required><%= listing.description %></textarea>
+        <div class="invalid-feedback">
+          Please enter a valid description.
+        </div>
+      </div>
+
+      <!-- Existing Image -->
+      <div class="form-group">
+        <label>Current Image</label>
+        <div class="existing-img">
+          <img src="<%= listing.image.url %>" alt="listing image">
+        </div>
+      </div>
+
+      <!-- Upload New Image -->
+      <div class="form-group">
+        <label>Upload New Image</label>
+
+        <div class="custom-upload">
+          <input type="file" name="listing[image][url]">
+          <span>📁 Choose Image</span>
+          <div class="invalid-feedback">Please upload an image.</div>
+        </div>
+      </div>
+
+      <!-- Price + Country -->
+      <div class="row">
+        <div class="form-group col">
+          <label>Price</label>
+          <div class="input-group">
+            <div class="input-group-text">&#8377;</div>
+            <input 
+              type="number" 
+              class="form-control" 
+              placeholder="Enter price" 
+              name="listing[price]" 
+              value="<%= listing.price %>" 
+              required>
+          </div>
+          <div class="invalid-feedback">
+            Please enter a valid price.
+          </div>
+        </div>
+
+        <div class="form-group col">
+          <label>Country</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Enter country" 
+            name="listing[country]" 
+            value="<%= listing.country %>" 
+            required>
+          <div class="invalid-feedback">
+            Please enter a valid country.
+          </div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label>Location</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Enter location" 
+          name="listing[location]" 
+          value="<%= listing.location %>" 
+          required>
+        <div class="invalid-feedback">
+          Please enter a valid location.
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="modern-btn">
+        Save Changes
+      </button>
+
+    </form>
+  </div>
+</div>
