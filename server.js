@@ -8,6 +8,7 @@ const listingsRouter=require("./routes/listings.js");
 const reviewsRouter=require("./routes/reviews.js");
 const flash=require("connect-flash");
 const session=require("express-session");
+const MongoStore = require("connect-mongo").default;
 const localSStrategy=require("passport-local");
 const User=require("./models/user.js");
 const passport=require("passport");
@@ -16,6 +17,7 @@ const GoogleStrategy=require("passport-google-oauth20").Strategy;
 require("dotenv").config();
 
 const app=express();
+const dbUrl=process.env.DB_URL;
 
 app.use(cors());
 app.set("view engine","ejs");
@@ -33,11 +35,22 @@ main().then(()=>{
 })
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wander');
+    await mongoose.connect(dbUrl);
 }
 
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret: process.env.SECRET
+    },
+    touchAfter:24*3600
+});
+store.on("error",()=>{
+    console.log("Error in MONGO SESSION CONNECT",err);
+});
 const sessionOption={
-    secret:"mysupersecret",
+    store:store,
+    secret:process.env.SECRET,
     resave:false,
     saveUninitialized:true,
     cookie : {
@@ -95,7 +108,7 @@ async (accessToken, refreshToken, profile, done) => {
 
 
 app.get("/",(req,res)=>{
-    res.send("root link");
+    res.redirect("/listings");
 });
 
 app.use((req,res,next)=>{
@@ -131,5 +144,5 @@ app.use((err,req,res,next)=>{
     res.status(status).render("error.ejs",{message});
 });
 app.listen(3000,()=>{
-    console.log("Listening on port 8080");
+    console.log("Listening on port 3000");
 });

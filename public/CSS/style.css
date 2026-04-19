@@ -682,7 +682,7 @@ label {
 }
 
 /* GRID layout instead of flex */
-footer-container {
+.footer-container {
   width: 100%;
   max-width: 1140px;   /* match Bootstrap container */
   margin: 0 auto;
